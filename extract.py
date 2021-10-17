@@ -122,3 +122,9 @@ writer = pd.ExcelWriter('cleaned_data.xlsx')
 df_ready.to_excel(writer)
 # save the excel
 writer.save()
+writer.close()
+
+writer = pd.ExcelWriter('cleaned_data_raw.xlsx')
+df_all.to_excel(writer)
+writer.save()
+writer.close()
