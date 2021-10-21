@@ -10,6 +10,7 @@ df2 = pd.read_csv('1. Grand total (EF2019  All students  Undergraduate  Degree:c
 empty = df2[df2['Grand total (EF2012_RV  All students  Undergraduate  Degree/certificate-seeking  First-time)'].isna()]
 empty = empty[['UnitID', 'Institution Name']]
 df7 = pd.read_csv('7. Value of endowment assets at the end of the fiscal year.csv')
+df7.loc[8, 'Value of endowment assets at the end of the fiscal year (F1415_F2_RV)'] = float(789354000)
 empty2 = df7[df7['Value of endowment assets at the end of the fiscal year (F1415_F2_RV)'].isna()]
 empty2 = empty2[['UnitID', 'Institution Name']]
 empty3 = df7[df7['Value of endowment assets at the end of the fiscal year (F1314_F2_RV)'].isna()]
@@ -83,7 +84,7 @@ df456 = df456.loc[:, ~df456.columns.duplicated()]
 df456['C/B'] = df456['6 Value'] / df456['5 Value']
 df456['A-(C/B)'] = df456['4 Value'] - df456['C/B']
 
-deflator = [100.738, 102.515, 104.15, 104.979, 106.487, 108.67, 111.175, 112.978] * 79
+deflator = [100.738, 102.515, 104.15, 104.979, 106.487, 108.67, 111.175, 112.978] * 80
 
 df456['deflator'] = df456['A-(C/B)'] / deflator
 df456['real market'] = df456['deflator'] * 100
@@ -91,6 +92,7 @@ df456['real market'] = df456['deflator'] * 100
 """df78"""
 
 df7 = pd.read_csv('7. Value of endowment assets at the end of the fiscal year.csv')
+df7.loc[8, 'Value of endowment assets at the end of the fiscal year (F1415_F2_RV)'] = float(789354000)
 df7 = df7[df7.UnitID.isin(empty_id) == False]
 df7 = (df7.set_index(["UnitID", "Institution Name"])
        .stack()
@@ -114,7 +116,7 @@ df78['Endowment/expenses'] = df78['7 Value'] / df78['8 Value']
 df_all = pd.concat([df123, df456, df78], axis=1, join='inner')
 df_all = df_all.loc[:, ~df_all.columns.duplicated()]
 df_ready = df_all[['UnitID', 'Institution Name', 'First year Value', 'Retention', 'real market', 'Endowment/expenses']]
-year_list = ['Base year 2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'] * 79
+year_list = ['Base year 2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'] * 80
 df_ready.insert(2, 'Year', year_list)
 
 writer = pd.ExcelWriter('cleaned_data.xlsx')
