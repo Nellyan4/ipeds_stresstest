@@ -62,6 +62,7 @@ empty_concat.to_csv('./National_sources/college_missing_data.csv')
 
 df1 = pd.read_csv('./National_sources/1.csv')
 df1 = df1[df1.UnitID.isin(empty_id) == False]
+df1 = df1[df1.columns[::-1]]
 df1 = (df1.set_index(["UnitID", "Institution Name"])
        .stack()
        .reset_index(name='First year Value')
@@ -69,6 +70,7 @@ df1 = (df1.set_index(["UnitID", "Institution Name"])
 
 df2 = pd.read_csv('./National_sources/2.csv')
 df2 = df2[df2.UnitID.isin(empty_id) == False]
+df2 = df2[df2.columns[::-1]]
 df2 = (df2.set_index(["UnitID", "Institution Name"])
        .stack()
        .reset_index(name='2 Value')
@@ -76,6 +78,7 @@ df2 = (df2.set_index(["UnitID", "Institution Name"])
 
 df3 = pd.read_csv('./National_sources/3.csv')
 df3 = df3[df3.UnitID.isin(empty_id) == False]
+df3 = df3[df3.columns[::-1]]
 df3 = (df3.set_index(["UnitID", "Institution Name"])
        .stack()
        .reset_index(name='3 Value')
@@ -95,6 +98,7 @@ df123 = df123.loc[:, ~df123.columns.duplicated()]
 
 df4 = pd.read_csv('./National_sources/4.csv')
 df4 = df4[df4.UnitID.isin(empty_id) == False]
+df4 = df4[df4.columns[::-1]]
 df4 = (df4.set_index(["UnitID", "Institution Name"])
        .stack()
        .reset_index(name='4 Value')
@@ -102,6 +106,7 @@ df4 = (df4.set_index(["UnitID", "Institution Name"])
 
 df5 = pd.read_csv('./National_sources/5.csv')
 df5 = df5[df5.UnitID.isin(empty_id) == False]
+df5 = df5[df5.columns[::-1]]
 df5 = (df5.set_index(["UnitID", "Institution Name"])
        .stack()
        .reset_index(name='5 Value')
@@ -109,6 +114,7 @@ df5 = (df5.set_index(["UnitID", "Institution Name"])
 
 df6 = pd.read_csv('./National_sources/6.csv')
 df6 = df6[df6.UnitID.isin(empty_id) == False]
+df6 = df6[df6.columns[::-1]]
 df6 = (df6.set_index(["UnitID", "Institution Name"])
        .stack()
        .reset_index(name='6 Value')
@@ -130,6 +136,7 @@ df456['real market'] = df456['deflator'] * 100
 df7 = pd.read_csv('./National_sources/7.csv')
 df7.loc[201, 'Value of endowment assets at the end of the fiscal year (F1415_F2_RV)'] = float(789354000)
 df7 = df7[df7.UnitID.isin(empty_id) == False]
+df7 = df7[df7.columns[::-1]]
 df7 = (df7.set_index(["UnitID", "Institution Name"])
        .stack()
        .reset_index(name='7 Value')
@@ -137,6 +144,7 @@ df7 = (df7.set_index(["UnitID", "Institution Name"])
 
 df8 = pd.read_csv('./National_sources/8.csv')
 df8 = df8[df8.UnitID.isin(empty_id) == False]
+df8 = df8[df8.columns[::-1]]
 df8 = (df8.set_index(["UnitID", "Institution Name"])
        .stack()
        .reset_index(name='8 Value')
@@ -146,6 +154,7 @@ df9 = pd.read_csv('./National_sources/9.csv')
 df9 = df9[df9.UnitID.isin(empty_id) == False]
 df9 = df9.iloc[: , :-1]
 df9 = df9.fillna(0)
+df9 = df9[df9.columns[::-1]]
 df9 = (df9.set_index(["UnitID", "Institution Name"])
        .stack()
        .reset_index(name='9 Value')
@@ -162,8 +171,8 @@ df78['Endowment/expenses'] = df78['7 Value'] / (df78['8 Value'] - df78['9 Value'
 df_all = pd.concat([df123, df456, df78], axis=1, join='inner')
 df_all = df_all.loc[:, ~df_all.columns.duplicated()]
 df_ready = df_all[['UnitID', 'Institution Name', 'First year Value', 'Retention', 'real market', 'Endowment/expenses']]
-year_list = ['2019', '2018', '2017', '2016', '2015', '2014', '2013', 'Base year 2012'] * 969
-count = [8, 7, 6, 5, 4, 3, 2, 1] * 969
+year_list = ['2012 (Base)', '2013', '2014', '2015', '2016', '2017', '2018', '2019'] * 969
+count = [1, 2, 3, 4, 5, 6, 7, 8] * 969
 df_ready.insert(1, 'Counter', count)
 df_ready.insert(2, 'Year', year_list)
 
