@@ -6,6 +6,52 @@ import pandas as pd
 # list = list(college_id)
 
 """Get the empty list of schools"""
+df1 = pd.read_csv('./PA_sources/1. Grand total (EF2019  All students  Undergraduate  Degree:certificate-seeking  First-time).csv')
+df1 = df1.iloc[: , :-1]
+empty = df1[df1.isna().any(axis=1)]
+empty = empty[['UnitID', 'Institution Name']]
+
+df2 = pd.read_csv('./PA_sources/2. Full-time adjusted fall cohort from prior year.csv')
+df2 = df2.iloc[: , :-1]
+empty2 = df2[df2.isna().any(axis=1)]
+empty2 = empty2[['UnitID', 'Institution Name']]
+
+df3 = pd.read_csv('./PA_sources/3. Students from prior year\'s adjusted full-time fall cohort enrolled in current year.csv')
+df3 = df3.iloc[: , :-1]
+empty3 = df3[df3.isna().any(axis=1)]
+empty3 = empty3[['UnitID', 'Institution Name']]
+
+df4 = pd.read_csv('./PA_sources/4. Publish in-state tuition and fees.csv')
+df4 = df4.iloc[: , :-1]
+empty4 = df4[df4.isna().any(axis=1)]
+empty4 = empty4[['UnitID', 'Institution Name']]
+
+df5 = pd.read_csv('./PA_sources/5. Full time total (EF2019  All students  Undergraduate  Degree:certificate-seeking  First-time).csv')
+df5 = df5.iloc[: , :-1]
+empty5 = df5[df5.isna().any(axis=1)]
+empty5 = empty5[['UnitID', 'Institution Name']]
+
+df6 = pd.read_csv('./PA_sources/6. Total amount of institutional grant aid awarded to full-time first-time undergraduates.csv')
+df6 = df6.iloc[: , :-1]
+empty6 = df6[df6.isna().any(axis=1)]
+empty6 = empty6[['UnitID', 'Institution Name']]
+
+df7 = pd.read_csv('./PA_sources/7. Value of endowment assets at the end of the fiscal year.csv')
+df7.loc[8, 'Value of endowment assets at the end of the fiscal year (F1415_F2_RV)'] = float(789354000)
+df7 = df7.iloc[: , :-1]
+empty7 = df7[df7.isna().any(axis=1)]
+empty7 = empty7[['UnitID', 'Institution Name']]
+
+df8 = pd.read_csv('./PA_sources/8. Total expenses-Total amount.csv')
+df8 = df8.iloc[: , :-1]
+empty8 = df8[df8.isna().any(axis=1)]
+empty8 = empty8[['UnitID', 'Institution Name']]
+
+empty_concat = pd.concat([empty, empty2, empty3, empty4, empty5, empty6, empty7, empty8]).drop_duplicates()
+empty_id = list(empty_concat['UnitID'])
+empty_concat.to_csv('./National_sources/college_missing_data.csv')
+
+"""Get the empty list of schools
 df2 = pd.read_csv('1. Grand total (EF2019  All students  Undergraduate  Degree:certificate-seeking  First-time).csv')
 empty = df2[df2['Grand total (EF2012_RV  All students  Undergraduate  Degree/certificate-seeking  First-time)'].isna()]
 empty = empty[['UnitID', 'Institution Name']]
@@ -18,12 +64,14 @@ empty3 = empty3[['UnitID', 'Institution Name']]
 empty4 = pd.concat([empty, empty2, empty3]).drop_duplicates()
 empty_id = list(empty4['UnitID'])
 empty4.to_csv('college_missing_data.csv')
+"""
 
 """df123"""
 # Note that Thomas Jefferson only have 2 years record, so we are omitting it as well.
 
-df1 = pd.read_csv('1. Grand total (EF2019  All students  Undergraduate  Degree:certificate-seeking  First-time).csv')
+df1 = pd.read_csv('./PA_sources/1. Grand total (EF2019  All students  Undergraduate  Degree:certificate-seeking  First-time).csv')
 df1 = df1[df1.UnitID.isin(empty_id) == False]
+df1 = df1[df1.columns[::-1]]
 df1 = (df1.set_index(["UnitID", "Institution Name"])
        .stack()
        .reset_index(name='First year Value')
